@@ -1,4 +1,3 @@
-# KongCustomPluginsDemo
 //docker image for micriservice
 docker build -t nodejs .
 
