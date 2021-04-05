@@ -1,1 +1,1 @@
-# zipkinDemo
+# KongCustomPluginsDemo
