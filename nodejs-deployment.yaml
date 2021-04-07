@@ -4,7 +4,7 @@ metadata:
   name: nodejs
   namespace: kong
 spec:
-  replicas: 2
+  replicas: 1
   selector:
    matchLabels:
     app: nodejs
@@ -15,12 +15,8 @@ spec:
     spec:
       containers:
       - name: nodejs
-        env:
-        - name: KONG_PLUGINS
-          value: bundled,myheader
-        - name: KONG_LUA_PACKAGE_PATH
-          value: "/opt/?.lua;;"
         image: papawhiskey93/nodeapp:1.0
+        imagePullPolicy: IfNotPresent 
         ports:
         - containerPort: 3000
         resources:
@@ -28,11 +24,3 @@ spec:
             cpu: 500m
           requests:
             cpu: 200m
-        volumeMounts:
-        - name: nodejs-config
-          mountPath: /opt/kong/plugins/myheader
-      volumes:
-      - name: nodejs-config
-        configMap:
-          name: nodejs-config
-

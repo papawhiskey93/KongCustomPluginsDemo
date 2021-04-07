@@ -4,30 +4,9 @@ const jsonServer = require('json-server');
 const jsonapp = jsonServer.create();
 const minDelay = 30;
 const maxDelay = 250;
-
-//collectmetric
-const prometheusExporter = require('@tailorbrands/node-exporter-prometheus');
-const options = {
-  appName: "crocodile-api",
-  collectDefaultMetrics: true,
-  ignoredRoutes: ['/metrics', '/favicon.ico', '/__rules']
-};
-const promExporter = prometheusExporter(options);
-jsonapp.use(promExporter.middleware);
-jsonapp.get('/metrics', promExporter.metrics);
-
-const middlewares = jsonServer.defaults()
-jsonapp.use(middlewares);
-
-// Add a delay to /crocodiles requests only
-jsonapp.use('/crocodiles', function (req, res, next) {
-  let delay = Math.floor(Math.random() * (maxDelay - minDelay)) + minDelay;
-  setTimeout(next, delay)
-});
-
-const router = jsonServer.router('db.json');
-jsonapp.use(router);
-
+const bodyparser = require('body-parser')
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended: false}));
 
 app.listen(3000, function () {
   
@@ -39,9 +18,10 @@ app.get("/", (req, res) => {
 console.log("Users Shown");
 });
 
-app.get("/delete", (req, res) => {
-  res.send("Delete User");
-console.log("Delete User");
+app.post("/home", (req, res) => {
+ console.log(req.body);
+  res.send(req.body).status(200);
+//console.log("Delete User");
 });
 
 app.get("/update", (req, res) => {
