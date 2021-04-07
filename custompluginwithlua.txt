@@ -64,6 +64,9 @@ plugin: myheader
 
 kubectl patch ingress demo -n kong -p '{"metadata":{"annotations":{"konghq.com/plugins": "my-custom-plugin"}}}'
 
+--for autoscaling
+kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://192.168.49.2:30804; done"
+
 curl -i $PROXY_IP/insert
 
 --valid request
